@@ -1,0 +1,4 @@
+rosrun rosneuro_acquisition acquisition _plugin:=rosneuro::EGDDevice _framerate:=16 _devarg:=gtec _samplerate:=512
+roslaunch rosneuro_tutorials filter_chain.launch
+roslaunch rosneuro_tutorials bandpower.launch
+roslaunch threshold_on_bandpower threshold_on_bandpower.launch
