@@ -160,10 +160,7 @@ ${catkin_INCLUDE_DIRS}
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(PROGRAMS
-    scripts/acquisition.py
     scripts/bandpower.py
-    scripts/filterchain.py
-    scripts/record.py
     scripts/thresholding.py 
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
