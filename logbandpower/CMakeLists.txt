@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(threshold_on_bandpower)
+project(logbandpower)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -161,7 +161,7 @@ ${catkin_INCLUDE_DIRS}
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(PROGRAMS
     scripts/bandpower.py
-    scripts/thresholding.py 
+    # scripts/thresholding.py 
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

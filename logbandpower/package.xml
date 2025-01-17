@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>threshold_on_bandpower</name>
+  <name>logbandpower</name>
   <version>0.0.0</version>
   <description>The assignment2 package</description>
 
