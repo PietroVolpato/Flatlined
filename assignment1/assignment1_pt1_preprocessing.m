@@ -60,7 +60,7 @@ for i = 1:length(subjectFolders)                             % analisi per sogge
         [~, fileName, ~] = fileparts(selectedFiles(j).name);
         matFilePath = fullfile(subjectFolder, strcat(fileName, '.mat'));
 
-        save(matFilePath, 'PSD', 'events', 'samplerate');
+        save(matFilePath, 'PSD', 'events');
 
         fprintf('File %s elaborato con successo.\n', selectedFiles(j).name);
     end
