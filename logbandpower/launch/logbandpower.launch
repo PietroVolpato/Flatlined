@@ -32,19 +32,33 @@
 	</node>
 
 	<!-- recording node -->
- 	<!-- <node name="recorder" pkg="rosneuro_recorder" type="recorder" >
+ 	<node name="recorder" pkg="rosneuro_recorder" type="recorder" >
 		<param name="~autostart" value="$(arg autostart)"/>
 		<param name="~filepath" value="$(arg filepath)"/>
+		
 		<remap from="/neurodata" to="/eeg/filtered"/>
-	</node> -->
+		<remap from="/events" to="/events/bus"/>
+		<remap from="/bandpower_data" to="/eeg/bandpower"/>
+	</node>
 
 
 	<node name="bandpower" pkg="logbandpower" type="bandpower.py" output="screen" >
 		<param name="rate" value="framerate"/>
 	</node>
 
-	<node name="thresholding" pkg="logbandpower" type="thresholding_node.py" output="screen">
+	<!-- Thresholding -->
+	<node name="thresholding_C3" pkg="logbandpower" type="thresholding_node.py" output="screen">
 		<param name="selected_channel" value="7"/>
+		<param name="threshold" value="10.0"/>
+	</node>
+
+	<node name="thresholding_Cz" pkg="logbandpower" type="thresholding_node.py" output="screen">
+		<param name="selected_channel" value="9"/>
+		<param name="threshold" value="10.0"/>
+	</node>
+
+	<node name="thresholding_C4" pkg="logbandpower" type="thresholding_node.py" output="screen">
+		<param name="selected_channel" value="11"/>
 		<param name="threshold" value="10.0"/>
 	</node>
 </launch>
