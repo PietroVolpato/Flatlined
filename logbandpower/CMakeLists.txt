@@ -161,7 +161,7 @@ ${catkin_INCLUDE_DIRS}
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(PROGRAMS
     scripts/bandpower.py
-    # scripts/thresholding.py 
+    scripts/thresholding_node.py 
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

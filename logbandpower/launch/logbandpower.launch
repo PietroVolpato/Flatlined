@@ -43,5 +43,8 @@
 		<param name="rate" value="framerate"/>
 	</node>
 
-	<!-- <node name="thresholding" pkg="logbandpower" type="thresholding.py" output="screen" /> -->
+	<node name="thresholding" pkg="logbandpower" type="thresholding_node.py" output="screen">
+		<param name="selected_channel" value="7"/>
+		<param name="threshold" value="10.0"/>
+	</node>
 </launch>
