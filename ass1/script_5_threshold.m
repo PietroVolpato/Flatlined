@@ -112,14 +112,14 @@ for subject=1:length(SUBJ)
     Tmasked=T(continuousFeedbackMask);
 
     th_vec=0.6:0.05:0.95;
-
+    timeForDecision=zeros(trials,1,length(th_vec));
+    
     for iTH=1:length(th_vec)
         
         th=th_vec(iTH);
         D=0.5*ones(size(pp));
         T0=Tmasked(1);
-        trialDecision=zeros(trials,1);   
-        timeForDecision=zeros(trials,1,length(th_vec));
+        trialDecision=zeros(trials,1);  
         time0=0;
 
 
