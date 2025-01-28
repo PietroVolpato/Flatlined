@@ -39,9 +39,10 @@ class ThresholdingNode:
     
     def publish_event(self, channel):
         event_msg = NeuroEvent()
-        event_msg.channel = channel
+        event_msg.family = channel
+        event_msg.description = 'Crossed the threshold'
         self.event_pub.publish(event_msg)
-        rospy.loginfo("Threshold crossed on channel {channel}---> Event published!")
+        rospy.loginfo("Threshold crossed on channel #%d ---> Event published!", channel)
 
 ##########################################################
 
