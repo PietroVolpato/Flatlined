@@ -8,6 +8,9 @@ addpath("data\")
 addpath("utils\")
 
 load("laplacian16.mat")
+
+mkdir(fullfile('results'))
+mkdir(fullfile('results','PSD'))
 %%
 
 datadir='data';
