@@ -1,6 +1,6 @@
 <launch>
 
-    <!-- acquisition arguments -->
+	<!-- acquisition arguments -->
 	<arg name="plugin" value='rosneuro::EGDDevice'/>
 	<arg name="devarg" value="/home/user/neurodata/ah7.20170613.161402.offline.mi.mi_bhbf.gdf"/>
 	<arg name="framerate" value='16'/>
@@ -10,36 +10,38 @@
 
 	<!-- load filter chain parameters -->
 	<rosparam command="load" file="$(find logbandpower)/cfg/ChainCfg.yaml" />
-   
+
 	<!-- acquisition node -->
 	<node name="acquisition" pkg="rosneuro_acquisition" type="acquisition" output="screen">
-  	  <param name="~plugin" 	  value="$(arg plugin)"/>
-  	  <param name="~devarg" 	  value="$(arg devarg)"/>
-  	  <param name="~samplerate" value="$(arg samplerate)"/>
-  	  <param name="~framerate"  value="$(arg framerate)"/>
-	  <remap from="/neurodata" to="/eeg/raw"/>
-  	</node>
-
-
-    <node name="neuroviz" pkg="rosneuro_visualizer" type="neuroviz" required="true">
+		<param name="~plugin" 	  value="$(arg plugin)"/>
+		<param name="~devarg" 	  value="$(arg devarg)"/>
+		<param name="~samplerate" value="$(arg samplerate)"/>
+		<param name="~framerate"  value="$(arg framerate)"/>
 		<remap from="/neurodata" to="/eeg/raw"/>
 	</node>
 
-    <node name="filterchain_node" pkg="rosneuro_filters" type="filterchain_node" output="screen" >
+
+	<node name="neuroviz" pkg="rosneuro_visualizer" type="neuroviz" required="true">
+		<remap from="/neurodata" to="/eeg/raw"/>
+	</node>
+
+	<node name="filterchain_node" pkg="rosneuro_filters" type="filterchain_node" output="screen" >
 		<param name="configname" value="ChainCfg" />
 		<remap from="/neurodata" to="/eeg/raw"/>
-        <remap from="/neurodata_filtered" to="/eeg/filtered"/>
+		<remap from="/neurodata_filtered" to="/eeg/filtered"/>
 	</node>
 
-	<!-- recording node -->
- 	<node name="recorder" pkg="rosneuro_recorder" type="recorder" >
-		<param name="~autostart" value="$(arg autostart)"/>
-		<param name="~filepath" value="$(arg filepath)"/>
-		
-		<remap from="/neurodata" to="/eeg/filtered"/>
-		<remap from="/events" to="/events/bus"/>
-		<remap from="/bandpower_data" to="/eeg/bandpower"/>
-	</node>
+	<!-- Recording filtered data-->
+	<node pkg="rosbag" type="record" name="rosbag_record_filtered" 
+		args="record /neurodata -o $(arg filepath)eeg_filtered.bag" />
+
+	<!-- Recording bandpower data-->
+	<node pkg="rosbag" type="record" name="rosbag_record_bandpower" 
+		args="record /bandpower_data -o $(arg filepath)eeg_bandpower.bag" />
+
+	<!-- Recording event data-->
+	<node pkg="rosbag" type="record" name="rosbag_record_events" 
+		args="record /events -o $(arg filepath)events_bus.bag" />
 
 
 	<node name="bandpower" pkg="logbandpower" type="bandpower.py" output="screen" >
