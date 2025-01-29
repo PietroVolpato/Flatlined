@@ -23,7 +23,7 @@ for i = 1:length(subjFolders)  % i changes with the subject
 
     cartellaCorrente = fullfile(main, subjFolders(i).name);    
     prefissoSubj     = extractBefore(subjFolders(i).name, '_');      
-    matFiles         = dir(fullfile(cartellaCorrente, '*.mat'));           % all the mat file corresponding to the current subjects              
+    matFiles         = dir(fullfile(cartellaCorrente, '*GA.mat'));           % all the mat file corresponding to the current subjects              
     % mat files selction
     selectedFiles    = matFiles(startsWith({matFiles.name}, prefissoSubj));
     
@@ -40,6 +40,7 @@ clear inizio_CF dur_fix Pk
 
 CF_start = max(CF_start);
 durFix   = min(durFix);
+length_trials = size(ERD_Beta,1);
 
 for i = 1:length(subjFolders)
     Pk = Pk_tot{i};
@@ -61,7 +62,7 @@ GA_ERD_beta_hand = squeeze(mean(ERD_beta_hand,1));
 
 %% Temporal Visualization
 Ch = 7;                                                 % corresponds to C3
-% or 9 = 'Cz' or 11 = 'C4'
+% 7 = 'C3' or 9 = 'Cz' or 11 = 'C4'
 % time course
 t = 0 : 1/Fs : (length_trials - 1)/Fs;
 
@@ -71,22 +72,22 @@ grid on
 hold on
 plot(t, GA_ERD_mu_hand(:,Ch), 'k', LineWidth=2)
 plot(t, ERD_mu_hand(:,:,Ch), '--')
-title(['ERD/ERS in mu band | Hands MI | Channel ', channelMap{Ch,2}])
+title(['ERD/ERS in μ band| Hands MI | Channel ', channelMap{Ch,2}])
 xlabel('time [s]')
 legend({'Grand Average'})
-xline(durFix/Fs, 'r','DisplayName','end reference')
-xline(CF_start/Fs, 'g','DisplayName', 'start activity')
+xline(durFix/Fs, 'k','DisplayName','end reference', LineWidth=1.2)
+xline(CF_start/Fs, 'k','DisplayName', 'start activity', LineWidth=1.2)
 
 subplot 122
 grid on
 hold on
 plot(t, GA_ERD_mu_feet(:,Ch), 'k', LineWidth=2)
 plot(t, ERD_mu_feet(:,:,Ch), '--')
-title(['ERD/ERS in mu band | Feet MI | Channel ', channelMap{Ch,2}])
+title(['ERD/ERS in μ band | Feet MI | Channel ', channelMap{Ch,2}])
 xlabel('time [s]')
 legend({'Grand Average'})
-xline(durFix/Fs, 'r','DisplayName','end reference')
-xline(CF_start/Fs, 'g','DisplayName', 'start activity')
+xline(durFix/Fs, 'k','DisplayName','end reference', LineWidth=1.2)
+xline(CF_start/Fs, 'k','DisplayName', 'start activity', LineWidth=1.2)
 
 figure
 subplot 121
@@ -94,22 +95,22 @@ grid on
 hold on
 plot(t, GA_ERD_beta_hand(:,Ch), 'k', LineWidth=2)
 plot(t, ERD_beta_hand(:,:,Ch), '--')
-title(['ERD/ERS in beta band | Hands MI | Channel ', channelMap{Ch,2}])
+title(['ERD/ERS in β band | Hands MI | Channel ', channelMap{Ch,2}])
 xlabel('time [s]')
 legend({'Grand Average'})
-xline(durFix/Fs, 'r','DisplayName','end reference')
-xline(CF_start/Fs, 'g','DisplayName', 'start activity')
+xline(durFix/Fs, 'k','DisplayName','end reference', LineWidth=1.2)
+xline(CF_start/Fs, 'k','DisplayName', 'start activity', LineWidth=1.2)
 
 subplot 122
 grid on
 hold on
 plot(t, GA_ERD_beta_feet(:,Ch), 'k', LineWidth=2)
 plot(t, ERD_beta_feet(:,:,Ch), '--')
-title(['ERD/ERS in beta band | Feet MI | Channel ', channelMap{Ch,2}])
+title(['ERD/ERS in β band | Feet MI | Channel ', channelMap{Ch,2}])
 xlabel('time [s]')
 legend({'Grand Average'})
-xline(durFix/Fs, 'r','DisplayName','end reference')
-xline(CF_start/Fs, 'g','DisplayName', 'start activity')
+xline(durFix/Fs, 'k','DisplayName','end reference', LineWidth=1.2)
+xline(CF_start/Fs, 'k','DisplayName', 'start activity', LineWidth=1.2)
 
 
 %% Spatial visualization
@@ -120,27 +121,29 @@ ERD_Act_771_Mu = mean(GA_ERD_mu_hand(CF_start:end,:),1);
 ERD_Ref_773_Mu = mean(GA_ERD_mu_feet(1:durFix, :),1);
 ERD_Act_773_Mu = mean(GA_ERD_mu_feet(CF_start:end,:),1);
 
+topoLim = [-50 50];
+
 figure
 subplot 221
 topoplot(squeeze(ERD_Ref_771_Mu), chanlocs16);
 colorbar
-clim([-50, 100])
-title('ERD/ERS during fixation (mu band) - Both Hands')
+clim(topoLim)
+title('Fixation | μ band - Both Feet')
 subplot 222
 topoplot(squeeze(ERD_Act_771_Mu), chanlocs16);
 colorbar
-clim([-50, 100])
-title('ERD/ERS during activity (mu band) - Both Hands')
+clim(topoLim)
+title('Activity | μ band - Both Feet')
 subplot 223
 topoplot(squeeze(ERD_Ref_773_Mu), chanlocs16);
 colorbar
-clim([-50, 100])
-title('ERD/ERS during activity (mu band) - Both Hands')
+clim(topoLim)
+title('Fixation | μ band - Both Hands')
 subplot 224
 topoplot(squeeze(ERD_Act_773_Mu), chanlocs16);
 colorbar
-clim([-50, 100])
-title('ERD/ERS during activity (mu band) - Both Feet')
+clim(topoLim)
+title('Activity | μ band - Both Hands')
 
 % average in the time domain (β band)
 ERD_Ref_771_beta = mean(GA_ERD_beta_hand(1:durFix, :),1);
@@ -148,24 +151,25 @@ ERD_Act_771_beta = mean(GA_ERD_beta_hand(CF_start:end,:),1);
 ERD_Ref_773_beta = mean(GA_ERD_beta_feet(1:durFix, :),1);
 ERD_Act_773_beta = mean(GA_ERD_beta_feet(CF_start:end,:),1);
 
+topoLim = [-20 20];
 figure
 subplot 221
 topoplot(squeeze(ERD_Ref_771_beta), chanlocs16);
 colorbar
-clim([-50, 100])
-title('ERD/ERS during fixation (beta band) - Both Hands')
+clim(topoLim)
+title('Fixation | β band - Both Feet')
 subplot 222
 topoplot(squeeze(ERD_Act_771_beta), chanlocs16);
 colorbar
-clim([-50, 100])
-title('ERD/ERS during activity (beta band) - Both Hands')
+clim(topoLim)
+title('Activity | β band - Both Feet')
 subplot 223
 topoplot(squeeze(ERD_Ref_773_beta), chanlocs16);
 colorbar
-clim([-50, 100])
-title('ERD/ERS during activity (beta band) - Both Hands')
+clim(topoLim)
+title('Fixation | β band - Both Hands')
 subplot 224
 topoplot(squeeze(ERD_Act_773_beta), chanlocs16);
 colorbar
-clim([-50, 100])
-title('ERD/ERS during activity (beta band) - Both Feet')
+clim(topoLim)
+title('Activity | β band - Both Hands')

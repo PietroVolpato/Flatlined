@@ -21,6 +21,7 @@ channelMap = {    1, 'Fz';    2, 'FC3';    3, 'FC1';    4, 'FCz';
     15, 'CP2';    16, 'CP4'};
 
 for i = 1:length(subjectFolders)      % i changes with the subject
+% for i = 2:5                              % rapresentative subjects
 
     subjectFolder = fullfile(mainFolder, subjectFolders(i).name);    
     subjectPrefix = extractBefore(subjectFolders(i).name, '_');      
@@ -71,7 +72,6 @@ for i = 1:length(subjectFolders)      % i changes with the subject
     Wn_high  = 22/(Fs/2);                           % Hz normalized in [0 1]
     [b,a]    = butter(n, [Wn_low Wn_high], 'bandpass');
     beta_sig = filtfilt(b, a, beta_sig);
-    [H_beta, F] = freqz(b,a,512);
 
     %% squaring of the signal
     sq_mu   = mu_sig.^2;
@@ -160,6 +160,7 @@ for i = 1:length(subjectFolders)      % i changes with the subject
     
     % Plot of the average and the standard error of the ERD/ERS over time for the two classes
     figure
+    sgtitle(['subject ', subjectPrefix])
     subplot 121
     hold on
     plot(t, ERD_mu_hand(:,Ch), 'r', 'DisplayName','Both Hands')
@@ -167,7 +168,7 @@ for i = 1:length(subjectFolders)      % i changes with the subject
     plot(t,ERD_mu_hand(:,Ch) - se_ERD_mu_hand(:,Ch), ':r', t, ERD_mu_hand(:,Ch) + se_ERD_mu_hand(:,Ch), ':r')
     plot(t,ERD_mu_feet(:,Ch) - se_ERD_mu_feet(:,Ch), ':g', t, ERD_mu_feet(:,Ch) + se_ERD_mu_feet(:,Ch), ':g')
     grid on
-    title(['ERD/ERS in mu band | Mean +- SE | Channel ', channelMap{Ch,2}])
+    title(['ERD/ERS in μ band | Channel ', channelMap{Ch,2}, 'subject ', subjectPrefix])
     xlabel('time [s]')
     xline(dur_fix/Fs, 'DisplayName','end reference')
     xline(inizio_CF/Fs, 'DisplayName', 'start activity')
@@ -180,13 +181,13 @@ for i = 1:length(subjectFolders)      % i changes with the subject
     plot(t,ERD_beta_hand(:,Ch) - se_ERD_beta_hand(:,Ch), ':r', t, ERD_beta_hand(:,Ch) + se_ERD_beta_hand(:,Ch), ':r')
     plot(t,ERD_beta_feet(:,Ch) - se_ERD_beta_feet(:,Ch), ':g', t, ERD_beta_feet(:,Ch) + se_ERD_beta_feet(:,Ch), ':g')
     grid on
-    title(['ERD in beta band | Mean +- SE | Channel ', channelMap{Ch,2}])
+    title(['ERD in β band | Channel ', channelMap{Ch,2}, ' | subject ', subjectPrefix])
     xlabel('time [s]')
-    xline(durFix/Fs, 'DisplayName','end reference')
-    xline(CF_start/Fs, 'DisplayName', 'start activity')
+    xline(dur_fix/Fs, 'DisplayName','end reference')
+    xline(inizio_CF/Fs, 'DisplayName', 'start activity')
     legend({'Both hands', 'Both feet'})
 
-    pause
+    % pause
     
     %% Spatial visualization (only for μ band)
 
@@ -198,33 +199,34 @@ for i = 1:length(subjectFolders)      % i changes with the subject
 
     % individual topoplots
     figure
+    sgtitle(['subject ', subjectPrefix])
     subplot 221
     topoplot(squeeze(ERD_Ref_771_Mu), chanlocs16);
     colorbar
     clim([-50, 100])
-    title('ERD/ERS during fixation (mu band) - Both Hands')
+    title('ERD/ERS during fixation μ band - Both Feet')
     subplot 222
     topoplot(squeeze(ERD_Act_771_Mu), chanlocs16);
     colorbar
     clim([-50, 100])
-    title('ERD/ERS during activity (mu band) - Both Hands')
+    title('ERD/ERS during activity μ band - Both Feet')
     subplot 223
     topoplot(squeeze(ERD_Ref_773_Mu), chanlocs16);
     colorbar
     clim([-50, 100])
-    title('ERD/ERS during activity (mu band) - Both Hands')
+    title('ERD/ERS during fixation μ band - Both Hands')
     subplot 224
     topoplot(squeeze(ERD_Act_773_Mu), chanlocs16);
     colorbar
     clim([-50, 100])
-    title('ERD/ERS during activity (mu band) - Both Feet')
+    title('ERD/ERS during activity μ band - Both Hands')
 
-    pause
+    % pause
 
     % saving the results in the same folder with the correspondent gdf
     % file name but .mat format
     [~, fileName, ~] = fileparts(selectedFiles(j).name);
-    matFilePath = fullfile(subjectFolder, strcat(fileName, '.mat'));
+    matFilePath = fullfile(subjectFolder, strcat(fileName, 'GA','.mat'));
     save(matFilePath, 'ERD_Beta', 'ERD_Mu', 'dur_fix', 'inizio_CF', 'Pk');
 
 end
