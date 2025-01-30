@@ -8,7 +8,7 @@
 	<arg name="autostart" value='true'/>
 	<arg name="filepath" value='$(find logbandpower)/results/'/>
 	<arg name="channel" value='7'/>
-	<arg name="threshold" value='-2.6'/>
+	<arg name="threshold" value='0.025'/>
 
 	<!-- load filter chain parameters -->
 	<rosparam command="load" file="$(find logbandpower)/cfg/ChainCfg.yaml" />
@@ -19,7 +19,6 @@
 		<param name="~devarg" 	  value="$(arg devarg)"/>
 		<param name="~samplerate" value="$(arg samplerate)"/>
 		<param name="~framerate"  value="$(arg framerate)"/>
-		<param name="~loop"	      value="false"/>
 		<remap from="/neurodata" to="/eeg/raw"/>
 	</node>
 
