@@ -1,11 +1,11 @@
 <launch>
 
-	<!-- Central Recorder Node -->
+	<!-- Recorder Node -->
     <node name="recorder" pkg="logbandpower" type="recorder_node.py" output="screen">
         <param name="~filepath" value='$(find logbandpower)/results/' />
     </node>
 
-	<!-- acquisition arguments -->
+	<!-- Acquisition arguments -->
 	<arg name="plugin" value='rosneuro::EGDDevice'/>
 	<arg name="devarg" value="/home/user/neurodata/ah7.20170613.161402.offline.mi.mi_bhbf.gdf"/>
 	<arg name="framerate" value='16'/>
@@ -15,10 +15,10 @@
 	<arg name="channel" value='7'/>
 	<arg name="threshold" value='0.015'/>
 
-	<!-- load filter chain parameters -->
+	<!-- Filter chain parameters -->
 	<rosparam command="load" file="$(find logbandpower)/cfg/ChainCfg.yaml" />
 
-	<!-- acquisition node -->
+	<!-- Acquisition node -->
 	<node name="acquisition" pkg="rosneuro_acquisition" type="acquisition" output="screen">
 		<param name="~plugin" 	  value="$(arg plugin)"/>
 		<param name="~devarg" 	  value="$(arg devarg)"/>
@@ -27,22 +27,24 @@
 		<remap from="/neurodata" to="/eeg/raw"/>
 	</node>
 
-
+	<!-- Neuroviz -->
 	<node name="neuroviz" pkg="rosneuro_visualizer" type="neuroviz" required="true">
 		<remap from="/neurodata" to="/eeg/raw"/>
 	</node>
 
+	<!-- Filterchain node -->
 	<node name="filterchain_node" pkg="rosneuro_filters" type="filterchain_node" output="screen" >
 		<param name="configname" value="ChainCfg" />
 		<remap from="/neurodata" to="/eeg/raw"/>
 		<remap from="/neurodata_filtered" to="/eeg/filtered"/>
 	</node>
 
+	<!-- Bandpower node -->
 	<node name="bandpower" pkg="logbandpower" type="bandpower.py" output="screen" >
 		<param name="rate" value="$(arg framerate)"/>
 	</node>
 
-	<!-- Thresholding -->
+	<!-- Thresholding node -->
 	<node name="thresholding" pkg="logbandpower" type="thresholding_node.py" output="screen">
 		<param name="selected_channel" value="$(arg channel)"/>
 		<param name="threshold" value="$(arg threshold)"/>
