@@ -6,7 +6,9 @@
 	<arg name="framerate" value='16'/>
 	<arg name="samplerate" value='512'/>
 	<arg name="autostart" value='true'/>
-	<arg name="filepath" value='$(find logbandpower)/data/'/>
+	<arg name="filepath" value='$(find logbandpower)/results/'/>
+	<arg name="channel" value='7'/>
+	<arg name="threshold" value='0.05'/>
 
 	<!-- load filter chain parameters -->
 	<rosparam command="load" file="$(find logbandpower)/cfg/ChainCfg.yaml" />
@@ -45,22 +47,12 @@
 
 
 	<node name="bandpower" pkg="logbandpower" type="bandpower.py" output="screen" >
-		<param name="rate" value="framerate"/>
+		<param name="rate" value="$(arg framerate)"/>
 	</node>
 
 	<!-- Thresholding -->
-	<node name="thresholding_C3" pkg="logbandpower" type="thresholding_node.py" output="screen">
-		<param name="selected_channel" value="7"/>
-		<param name="threshold" value="0.05"/>
-	</node>
-
-	<node name="thresholding_Cz" pkg="logbandpower" type="thresholding_node.py" output="screen">
-		<param name="selected_channel" value="9"/>
-		<param name="threshold" value="0.05"/>
-	</node>
-
-	<node name="thresholding_C4" pkg="logbandpower" type="thresholding_node.py" output="screen">
-		<param name="selected_channel" value="11"/>
-		<param name="threshold" value="0.05"/>
+	<node name="thresholding" pkg="logbandpower" type="thresholding_node.py" output="screen">
+		<param name="selected_channel" value="$(arg channel)"/>
+		<param name="threshold" value="$(arg threshold)"/>
 	</node>
 </launch>
