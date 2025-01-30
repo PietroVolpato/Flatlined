@@ -1,5 +1,10 @@
 <launch>
 
+	<!-- Central Recorder Node -->
+    <node name="recorder" pkg="logbandpower" type="recorder_node.py" output="screen">
+        <param name="~filepath" value='$(find logbandpower)/results/' />
+    </node>
+
 	<!-- acquisition arguments -->
 	<arg name="plugin" value='rosneuro::EGDDevice'/>
 	<arg name="devarg" value="/home/user/neurodata/ah7.20170613.161402.offline.mi.mi_bhbf.gdf"/>
@@ -8,7 +13,7 @@
 	<arg name="autostart" value='true'/>
 	<arg name="filepath" value='$(find logbandpower)/results/'/>
 	<arg name="channel" value='7'/>
-	<arg name="threshold" value='0.025'/>
+	<arg name="threshold" value='0.015'/>
 
 	<!-- load filter chain parameters -->
 	<rosparam command="load" file="$(find logbandpower)/cfg/ChainCfg.yaml" />
@@ -32,19 +37,6 @@
 		<remap from="/neurodata" to="/eeg/raw"/>
 		<remap from="/neurodata_filtered" to="/eeg/filtered"/>
 	</node>
-
-	<!-- Recording filtered data-->
-	<node pkg="rosbag" type="record" name="rosbag_record_filtered" 
-		args="record /neurodata -o $(arg filepath)eeg_filtered.bag" />
-
-	<!-- Recording bandpower data-->
-	<node pkg="rosbag" type="record" name="rosbag_record_bandpower" 
-		args="record /bandpower_data -o $(arg filepath)eeg_bandpower.bag" />
-
-	<!-- Recording event data-->
-	<node pkg="rosbag" type="record" name="rosbag_record_events" 
-		args="record /events -o $(arg filepath)events_bus.bag" />
-
 
 	<node name="bandpower" pkg="logbandpower" type="bandpower.py" output="screen" >
 		<param name="rate" value="$(arg framerate)"/>

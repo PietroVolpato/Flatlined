@@ -1,6 +1,5 @@
 import rospy
-from rosneuro_msgs.msg import NeuroFrame
-from rosneuro_msgs.msg import NeuroEvent
+from rosneuro_msgs.msg import NeuroFrame, NeuroEvent
 
 ##########################################################
 
@@ -46,10 +45,9 @@ class ThresholdingNode:
 
 ##########################################################
 
-
-def main ():
-    thresholding_node = ThresholdingNode()
-    rospy.spin()
-
 if __name__ == '__main__':
-    main()
+    try:
+        thresholding_node = ThresholdingNode()
+        rospy.spin()
+    except rospy.ROSInterruptException:
+        pass

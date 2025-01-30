@@ -162,6 +162,7 @@ ${catkin_INCLUDE_DIRS}
 catkin_install_python(PROGRAMS
     scripts/bandpower.py
     scripts/thresholding_node.py 
+    scripts/recorder_node.py 
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
