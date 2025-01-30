@@ -1,7 +1,7 @@
 <launch>
 
 	<!-- Recorder Node -->
-    <node name="recorder" pkg="logbandpower" type="recorder_node.py" output="screen">
+    <node name="recorder" pkg="logbandpower" type="recorder.py" output="screen">
         <param name="~filepath" value='$(find logbandpower)/results/' />
     </node>
 
@@ -45,7 +45,7 @@
 	</node>
 
 	<!-- Thresholding node -->
-	<node name="thresholding" pkg="logbandpower" type="thresholding_node.py" output="screen">
+	<node name="thresholding" pkg="logbandpower" type="thresholding.py" output="screen">
 		<param name="selected_channel" value="$(arg channel)"/>
 		<param name="threshold" value="$(arg threshold)"/>
 	</node>

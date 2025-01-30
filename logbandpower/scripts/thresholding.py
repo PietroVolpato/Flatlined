@@ -5,7 +5,7 @@ from rosneuro_msgs.msg import NeuroFrame, NeuroEvent
 
 class ThresholdingNode:
     def __init__(self):
-        rospy.init_node('thresholding_node')
+        rospy.init_node('thresholding')
 
             # Obtain parameters
         self.selected_channel = rospy.get_param('~selected_channel', 0)
