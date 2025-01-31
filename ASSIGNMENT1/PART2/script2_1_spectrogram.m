@@ -13,7 +13,7 @@ mkdir(fullfile('results'))
 mkdir(fullfile('results','PSD'))
 %%
 
-datadir='data';
+datadir='data'; %IF OPTION2  insert absolute path to the directory containing the single subject subfolders
 
 SUBJ=dir(datadir);
 SUBJ(1:2)=[];
@@ -39,7 +39,7 @@ for subject=1:length(SUBJ)
 
         if length(D(file).name)>10 
         
-            filepath=fullfile(pwd,datadir,subjdir,D(file).name);
+            filepath=fullfile(pwd,datadir,subjdir,D(file).name);    %IF OPTION 2 remove here pwd,
     
             [ S,h0 ] = sload( filepath );        %file extraction    
             S=S(:,1:end-1)*lap;                 %application of the laplacian mask
