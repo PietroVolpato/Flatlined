@@ -1,6 +1,8 @@
 README_part2 of second assignment
 
-to run the code 
+to run the code
+
+OPTION 1)
 inside the 'PART2' folder create a 'data' directory and paste the  subject specific folders into it.
 the structure should look like
 
@@ -30,6 +32,18 @@ the structure should look like
 	>script2_2
 	>script2_3
 	>...
+
+OPTION 2)
+modify just
+	-) the line 16 of script2_1_spectrogram.m 
+	  datadir='data'
+	  by removing 'data' and inserting the absolute pathe to the directory containing the subject folders.
+	-) AND the line 42 of the same script
+	  filepath=fullfile(pwd,datadir,subjdir,D(file).name);
+	by removing pwd.
+This script then saves all the psds into the \result\PDS directory and is therefore not necessary to modify the other scripts. 
+
+
 
 then run sequentially all the single scripts from 2_1 to 2_7, the script 4,5 and 6 present two variants that correspond to the two tested control frameworks and have to be runned both.
 the intermediate resuls will be saved in subfolders of the 'results' directory while the script are being lounched
